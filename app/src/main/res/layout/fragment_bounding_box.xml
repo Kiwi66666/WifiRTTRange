@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout4"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.BoundingBoxFragment">
+
+    <EditText
+        android:id="@+id/bondingBoxDown"
+        android:layout_width="60dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="172dp"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        android:text="Dół"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bondingBoxLeft" />
+
+    <EditText
+        android:id="@+id/bondingBoxRight"
+        android:layout_width="60dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="100dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        android:text="Prawo"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bondingBoxUp" />
+
+    <EditText
+        android:id="@+id/bondingBoxLeft"
+        android:layout_width="60dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        android:text="Lewo"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bondingBoxUp" />
+
+    <TextView
+        android:id="@+id/boundingBoxTextView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="100dp"
+        android:text="Podaj wymiary obszaru skanowania"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/bondingBoxUp"
+        android:layout_width="60dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="172dp"
+        android:layout_marginTop="84dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        android:text="Góra"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/boundingBoxTextView1" />
+
+    <Button
+        android:id="@+id/boundingBoxFinish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="248dp"
+        android:layout_marginTop="616dp"
+        android:text="ZAKOŃCZ"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

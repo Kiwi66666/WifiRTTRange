@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/settingrouters"
+    app:startDestination="@id/askForPermitionFragment">
+
+    <fragment
+        android:id="@+id/askForPermitionFragment"
+        android:name="com.example.wifirtt.ui.AskForPermitionFragment"
+        android:label="fragment_ask_for_permition"
+        tools:layout="@layout/fragment_ask_for_permition" >
+        <action
+            android:id="@+id/action_askForPermitionFragment_to_askForMethodFragment"
+            app:destination="@id/askForMethodFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/askForMethodFragment"
+        android:name="com.example.wifirtt.ui.AskForMethodFragment"
+        android:label="fragment_ask_for_method"
+        tools:layout="@layout/fragment_ask_for_method" >
+        <action
+            android:id="@+id/action_askForMethodFragment_to_routerFragment"
+            app:destination="@id/routerFragment" />
+        <action
+            android:id="@+id/action_askForMethodFragment_to_routersFileFragment"
+            app:destination="@id/routersFileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/routerFragment"
+        android:name="com.example.wifirtt.ui.RouterFragment"
+        android:label="fragment_router_list"
+        tools:layout="@layout/fragment_router_list" >
+        <action
+            android:id="@+id/action_routerFragment_to_boundingBoxFragment"
+            app:destination="@id/boundingBoxFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/routersFileFragment"
+        android:name="com.example.wifirtt.ui.RoutersFileFragment"
+        android:label="fragment_routers_file"
+        tools:layout="@layout/fragment_routers_file" >
+        <action
+            android:id="@+id/action_routersFileFragment_to_boundingBoxFileFragment"
+            app:destination="@id/boundingBoxFileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/boundingBoxFragment"
+        android:name="com.example.wifirtt.ui.BoundingBoxFragment"
+        android:label="fragment_bounding_box"
+        tools:layout="@layout/fragment_bounding_box" />
+    <fragment
+        android:id="@+id/boundingBoxFileFragment"
+        android:name="com.example.wifirtt.ui.BoundingBoxFileFragment"
+        android:label="fragment_bounding_box_file"
+        tools:layout="@layout/fragment_bounding_box_file" />
+</navigation>
