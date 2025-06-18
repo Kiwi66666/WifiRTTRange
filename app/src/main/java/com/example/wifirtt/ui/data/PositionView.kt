@@ -14,13 +14,15 @@ class PositionView(context: Context, attrs: AttributeSet? = null): View(context,
     private var paint = Paint()
 
     override fun onDraw(canvas: Canvas) {
+        paint.color = Color.LTGRAY
+        canvas.drawColor(Color.BLACK)
+        canvas.drawRect(4F,4F,width.toFloat()-8F,height.toFloat()-8F,paint)
         paint.color = Color.RED
-        canvas.drawColor(Color.BLUE)
         routers.forEach{
             canvas.drawCircle(it.x, it.y, it.radius, paint)
         }
         if(point.color) {
-            paint.color = Color.BLUE
+            paint.color = Color.WHITE
         } else {
             paint.color = Color.GREEN
         }

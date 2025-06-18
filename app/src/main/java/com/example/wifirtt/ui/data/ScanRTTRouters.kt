@@ -4,7 +4,7 @@ import android.net.wifi.ScanResult
 
 object ScanRTTRouters {
     private var scanForRTT: MutableList<ScanResult> = ArrayList()
-    private var toScan: MutableList<RouterToScan> = ArrayList()
+    private var toRanging: MutableList<RouterToRanging> = ArrayList()
 
     fun addNewListForRTT(list: ArrayList<ScanResult>) {
         scanForRTT.clear()
@@ -20,18 +20,18 @@ object ScanRTTRouters {
         scanForRTT.add(scan)
     }
     fun orderRoutersToRanging(list: ArrayList<Router>) {
-        toScan.clear()
+        toRanging.clear()
         for (j in scanForRTT) {
             for (i in list) {
                 if (i.bssid == j.BSSID) {
-                    addToScan(RouterToScan(j, i.x, i.y, 0F, 0F))
+                    addToRanging(RouterToRanging(j, i.x, i.y, 0F, 0F))
                     break
                 }
             }
         }
     }
     fun checkRouters(list: ArrayList<Router>): CheckRouter {
-        toScan.clear()
+        toRanging.clear()
         if (list.size < 3) return CheckRouter(0, null) //0 = nie wystarczająca liczba routerów na liście
         val notFound : ArrayList<String> = ArrayList()
         var check = true
@@ -39,7 +39,7 @@ object ScanRTTRouters {
             check = true
             for (j in scanForRTT) {
                 if (i.bssid == j.BSSID)  {
-                    addToScan(RouterToScan(j, i.x, i.y, 0F, 0F))
+                    addToRanging(RouterToRanging(j, i.x, i.y, 0F, 0F))
                     check = false
                     break
                 }
@@ -50,26 +50,26 @@ object ScanRTTRouters {
         if (notFound.size == 0) {
             return CheckRouter(1, null) //1 = znaleziono wszystkie routery z listy
         }
-        return if (toScan.size < 3) CheckRouter(2, notFound) //2 = nie znaleziono wszystkich routerów i przez to jest za mało routerów
+        return if (toRanging.size < 3) CheckRouter(2, notFound) //2 = nie znaleziono wszystkich routerów i przez to jest za mało routerów
         else CheckRouter(3, notFound) //3 = nie znaleziono wszystkich routerów, ale jest wystarczająca liczba routerów
     }
-    fun addToScan(scan: RouterToScan) {
-        toScan.add(scan)
+    fun addToRanging(scan: RouterToRanging) {
+        toRanging.add(scan)
     }
-    fun getListToScan() : MutableList<RouterToScan> {
-        return toScan
+    fun getListToRanging() : MutableList<RouterToRanging> {
+        return toRanging
     }
     fun normalizeRouters(bb: BoundingBox4Params) {
-        toScan.forEach {
+        toRanging.forEach {
             var help = it.x - bb.left
             it.xNorm = help
             help = bb.up - it.y
             it.yNorm = help
         }
     }
-    fun getListToScanResult() : MutableList<ScanResult> {
+    fun getListToRangingResult() : MutableList<ScanResult> {
         val list: MutableList<ScanResult> = ArrayList()
-        for (i in getListToScan()) {
+        for (i in getListToRanging()) {
             list.add(i.scanResult)
         }
         return list

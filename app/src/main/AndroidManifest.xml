@@ -24,11 +24,6 @@
             android:label="@string/title_activity_positioning_draw"
             android:theme="@style/Theme.WiFiRTT" />
         <activity
-            android:name=".ui.PositioningActivity"
-            android:exported="false"
-            android:label="@string/title_activity_positioning"
-            android:theme="@style/Theme.WiFiRTT" />
-        <activity
             android:name=".ui.MainActivity"
             android:exported="true" >
             <intent-filter>

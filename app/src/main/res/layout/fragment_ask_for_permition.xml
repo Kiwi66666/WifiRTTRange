@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
         android:layout_marginTop="112dp"
-        android:text="Aplikacja do działania wymaga zezwolenia\n dostępu do dokładnej lokalizacji urządzenia.\n Bez niej WiFi RTT nie będzie działać. "
+        android:text="Aplikacja wymaga zezwolenia\n dostępu do dokładnej lokalizacji urządzenia.\n Bez niej WiFi RTT nie będzie działać. "
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

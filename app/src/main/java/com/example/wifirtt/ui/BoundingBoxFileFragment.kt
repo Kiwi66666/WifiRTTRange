@@ -57,7 +57,7 @@ class BoundingBoxFileFragment : Fragment() {
                         val boundingBoxJson = Gson().fromJson<BoundingBox4Params>(x, boxType)
                         if ((boundingBoxJson.down < boundingBoxJson.up) and (boundingBoxJson.left < boundingBoxJson.right)) {
                             var check = true
-                            ScanRTTRouters.getListToScan().forEach {
+                            ScanRTTRouters.getListToRanging().forEach {
                                 if ((it.x < boundingBoxJson.down) or (it.x > boundingBoxJson.up) or (it.y < boundingBoxJson.left) or (it.y > boundingBoxJson.right)) {
                                     check = false
                                 }

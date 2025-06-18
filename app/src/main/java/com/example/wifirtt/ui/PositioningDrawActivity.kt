@@ -18,12 +18,10 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.view.updateLayoutParams
-import com.example.wifirtt.databinding.ActivityPositioningBinding
 import com.example.wifirtt.databinding.ActivityPositioningDrawBinding
 import com.example.wifirtt.ui.data.BoundingBox
 import com.example.wifirtt.ui.data.Point
-import com.example.wifirtt.ui.data.Router
-import com.example.wifirtt.ui.data.RouterToScan
+import com.example.wifirtt.ui.data.RouterToRanging
 import com.example.wifirtt.ui.data.ScanRTTRouters
 import java.util.Timer
 import java.util.concurrent.Executor
@@ -52,9 +50,9 @@ class PositioningDrawActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val filter = IntentFilter(WifiRttManager.ACTION_WIFI_RTT_STATE_CHANGED)
-        binding.router1.text = ScanRTTRouters.getListToScan()[0].scanResult.BSSID
-        binding.router2.text = ScanRTTRouters.getListToScan()[1].scanResult.BSSID
-        binding.router3.text = ScanRTTRouters.getListToScan()[2].scanResult.BSSID
+        binding.router1.text = ScanRTTRouters.getListToRanging()[0].scanResult.BSSID
+        binding.router2.text = ScanRTTRouters.getListToRanging()[1].scanResult.BSSID
+        binding.router3.text = ScanRTTRouters.getListToRanging()[2].scanResult.BSSID
         startRangingRequest(0, 0, 0)
 
 
@@ -90,7 +88,7 @@ class PositioningDrawActivity : AppCompatActivity() {
                 }
                 checkScreen = false
             }
-            addRoutersToDraw(ScanRTTRouters.getListToScan(), binding.position.height.toFloat(), binding.position.width.toFloat())
+            addRoutersToDraw(ScanRTTRouters.getListToRanging(), binding.position.height.toFloat(), binding.position.width.toFloat())
             val point = Point(0F, 0F,10F, true)
 
 
@@ -99,7 +97,7 @@ class PositioningDrawActivity : AppCompatActivity() {
         if(numberOfScans==10) {
 
             addRoutersToDraw(
-                ScanRTTRouters.getListToScan(),
+                ScanRTTRouters.getListToRanging(),
                 binding.position.height.toFloat(),
                 binding.position.width.toFloat()
             )
@@ -145,13 +143,11 @@ class PositioningDrawActivity : AppCompatActivity() {
         override fun onRangingFailure(p0: Int) {
             Log.d("s", "nie działa")
             startRangingRequest(0, 0, 0)
+            Toast.makeText(this@PositioningDrawActivity, "jest coś", Toast.LENGTH_SHORT).show()
         }
     }
-    private fun random(min: Float, max: Float) : Float {
-        var rand = Random
-        return rand.nextFloat() * (max - min) + min
-    }
-    private fun addRoutersToDraw(r: MutableList<RouterToScan>, x: Float, y:Float) {
+
+    private fun addRoutersToDraw(r: MutableList<RouterToRanging>, x: Float, y:Float) {
         val routers: MutableList<Point> = ArrayList()
         r.forEach {
             val xy = convertNormMetersToCart(x, y, it.xNorm, it.yNorm)
@@ -161,17 +157,17 @@ class PositioningDrawActivity : AppCompatActivity() {
         binding.position.addRouter(routers)
     }
     private fun trilateration(d1: Float, d2: Float, d3: Float): Array<Float> { //argumenty w metrach
-        val r1 = ScanRTTRouters.getListToScan()[0]
-        val r2 = ScanRTTRouters.getListToScan()[1]
-        val r3 = ScanRTTRouters.getListToScan()[2]
-        val A = 2*r2.x - 2*r1.x
-        val B = 2*r2.y - 2*r1.y
-        val C = d1*d1 - d2*d2 - r1.x*r1.x + r2.x*r2.x - r1.y*r1.y + r2.y*r2.y
-        val D = 2*r3.x - 2*r2.x
-        val E = 2*r3.y - 2*r2.y
-        val F = d2*d2 - d3*d3 - r2.x*r2.x + r3.x*r3.x - r2.y*r2.y + r3.y*r3.y
-        val x = (C*E - F*B)/(E*A - B*D)
-        val y = (C*D - A*F)/(B*D - A*E)
+        val r1 = ScanRTTRouters.getListToRanging()[0]
+        val r2 = ScanRTTRouters.getListToRanging()[1]
+        val r3 = ScanRTTRouters.getListToRanging()[2]
+        val a = 2*r2.x - 2*r1.x
+        val b = 2*r2.y - 2*r1.y
+        val c = d1*d1 - d2*d2 - r1.x*r1.x + r2.x*r2.x - r1.y*r1.y + r2.y*r2.y
+        val d = 2*r3.x - 2*r2.x
+        val e = 2*r3.y - 2*r2.y
+        val f = d2*d2 - d3*d3 - r2.x*r2.x + r3.x*r3.x - r2.y*r2.y + r3.y*r3.y
+        val x = (c*e - f*b)/(e*a - b*d)
+        val y = (c*d - a*f)/(b*d - a*e)
         return arrayOf(x,y)
     }
     private fun convertMetersToCart(xCart: Float, yCart: Float, x: Float, y: Float):Array<Float> {
