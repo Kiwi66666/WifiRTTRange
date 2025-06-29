@@ -11,73 +11,69 @@
         android:id="@+id/position"
         android:layout_width="300dp"
         android:layout_height="300dp"
+        android:layout_marginStart="52dp"
         android:layout_marginTop="204dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"></com.example.wifirtt.ui.data.PositionView>
-
-    <TextView
-        android:id="@+id/router1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="20dp"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/position" />
-
-    <TextView
-        android:id="@+id/router2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/router1"
-        app:layout_constraintTop_toBottomOf="@+id/router1" />
-
-    <TextView
-        android:id="@+id/router3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/router2"
-        app:layout_constraintTop_toBottomOf="@+id/router2" />
-
-    <TextView
-        android:id="@+id/router1Scans"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
-        android:text="TextView"
-        app:layout_constraintStart_toEndOf="@+id/router1"
-        app:layout_constraintTop_toTopOf="@+id/router1" />
-
-    <TextView
-        android:id="@+id/router2Scans"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/router1Scans"
-        app:layout_constraintTop_toTopOf="@+id/router2" />
-
-    <TextView
-        android:id="@+id/router3Scans"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/router2Scans"
-        app:layout_constraintTop_toTopOf="@+id/router3" />
 
     <TextView
         android:id="@+id/numberOfScans"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="124dp"
+        android:layout_marginStart="164dp"
+        android:layout_marginTop="24dp"
         android:text="TextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/posX"
+        android:layout_width="147dp"
+        android:layout_height="88dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="92dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/posY"
+        android:layout_width="147dp"
+        android:layout_height="88dp"
+        android:layout_marginStart="68dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintStart_toEndOf="@+id/posX"
+        app:layout_constraintTop_toTopOf="@+id/posX" />
+
+    <TextView
+        android:id="@+id/triX"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="44dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/position" />
+
+    <TextView
+        android:id="@+id/triY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="156dp"
+        android:text="TextView"
+        app:layout_constraintStart_toEndOf="@+id/triX"
+        app:layout_constraintTop_toTopOf="@+id/triX" />
+
+    <TextView
+        android:id="@+id/distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="44dp"
+        android:text="TextView"
+        app:layout_constraintStart_toEndOf="@+id/triX"
+        app:layout_constraintTop_toBottomOf="@+id/triX" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

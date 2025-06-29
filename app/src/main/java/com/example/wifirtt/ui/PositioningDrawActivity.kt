@@ -14,6 +14,7 @@ import android.net.wifi.rtt.RangingResultCallback
 import android.net.wifi.rtt.WifiRttManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -23,10 +24,16 @@ import com.example.wifirtt.ui.data.BoundingBox
 import com.example.wifirtt.ui.data.Point
 import com.example.wifirtt.ui.data.RouterToRanging
 import com.example.wifirtt.ui.data.ScanRTTRouters
+import java.io.BufferedReader
+import java.io.File
+import java.io.FileOutputStream
+import java.io.FileReader
+import java.io.IOException
 import java.util.Timer
 import java.util.concurrent.Executor
 import java.util.logging.Handler
 import kotlin.concurrent.schedule
+import kotlin.math.sqrt
 import kotlin.random.Random
 
 class PositioningDrawActivity : AppCompatActivity() {
@@ -50,10 +57,8 @@ class PositioningDrawActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val filter = IntentFilter(WifiRttManager.ACTION_WIFI_RTT_STATE_CHANGED)
-        binding.router1.text = ScanRTTRouters.getListToRanging()[0].scanResult.BSSID
-        binding.router2.text = ScanRTTRouters.getListToRanging()[1].scanResult.BSSID
-        binding.router3.text = ScanRTTRouters.getListToRanging()[2].scanResult.BSSID
         startRangingRequest(0, 0, 0)
+
 
 
 
@@ -65,7 +70,7 @@ class PositioningDrawActivity : AppCompatActivity() {
         numberOfScans++
         binding.numberOfScans.text=numberOfScans.toString()
         if(d1<200000){
-            sumsOfScans[0] += (d1.toFloat()+3300)/1.5F
+            sumsOfScans[0] += (d1.toFloat()-1800)/1.5F
             numbersOfScansToDraw[0]++
         }
         if(d2<200000){
@@ -76,9 +81,6 @@ class PositioningDrawActivity : AppCompatActivity() {
             sumsOfScans[2] += (d3.toFloat()-1000)/1.5F
             numbersOfScansToDraw[2]++
         }
-        binding.router1Scans.text=numbersOfScansToDraw[0].toString()
-        binding.router2Scans.text=numbersOfScansToDraw[1].toString()
-        binding.router3Scans.text=numbersOfScansToDraw[2].toString()
         if (checkScreen) { //przy pierwszym range trzeba zainicjować
             var sizeOfView = calculateArea(binding.position.height, binding.position.width)
             if (sizeOfView[0] != 0) {
@@ -108,13 +110,43 @@ class PositioningDrawActivity : AppCompatActivity() {
                 xyMeters[0],
                 xyMeters[1]
             )
+            var x = 2.1F
+            var y = 4.30F
             val point = Point(xyCart[0], xyCart[1], 10F, false)
+            if(binding.posX.text.toString() != "" || binding.posY.text.toString() != "") {
+                x = binding.posX.text.toString().toFloat()
+                y = binding.posY.text.toString().toFloat()
+            }
+
+            binding.triX.text = xyMeters[0].toString()
+            binding.triY.text = xyMeters[1].toString()
 
             numberOfScans = 0
             numbersOfScansToDraw = arrayOf(0,0,0)
             sumsOfScans = arrayOf(0F,0F,0F)
-            binding.position.setPoint(point)
 
+            val xy = convertNormMetersToCart(binding.position.width.toFloat(), binding.position.height.toFloat(), x, y)
+            val pos = Point(xy[0], xy[1], 10F, false)
+            binding.position.setPos(pos)
+            binding.position.setPoint(point)
+            var help = xyMeters[0] - BoundingBox.original.left
+            xyMeters[0] = help
+            help = BoundingBox.original.up - xyMeters[1]
+            xyMeters[1] = help
+            val distanceSquared = ((x-xyMeters[0])*(x-xyMeters[0]))+((y-xyMeters[1])*(y-xyMeters[1]))
+            val distance = sqrt(distanceSquared)
+            binding.distance.text = distance.toString()
+            val filepath = "test"
+            val filename = "test.txt"
+            val externalFile = File(getExternalFilesDir(filepath), filename)
+            try {
+                val fos = FileOutputStream(externalFile, true)
+                fos.write(distance.toString().toByteArray())
+                fos.write(",".toByteArray())
+                Toast.makeText(this@PositioningDrawActivity, "działa", Toast.LENGTH_SHORT).show()
+            } catch (e: IOException) {
+                Toast.makeText(this@PositioningDrawActivity, "nie działa", Toast.LENGTH_SHORT).show()
+            }
         }
     }
     private inner class RTTRangingResultCallback : RangingResultCallback() {
