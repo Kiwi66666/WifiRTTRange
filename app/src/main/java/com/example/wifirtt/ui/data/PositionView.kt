@@ -28,8 +28,6 @@ class PositionView(context: Context, attrs: AttributeSet? = null): View(context,
             paint.color = Color.GREEN
         }
         canvas.drawCircle(point.x, point.y, point.radius, paint)
-        paint.color= Color.BLUE
-        canvas.drawCircle(position.x, position.y, position.radius, paint)
         super.onDraw(canvas)
     }
     fun setPoint(p: Point) {

@@ -11,29 +11,8 @@
         android:label="fragment_ask_for_permition"
         tools:layout="@layout/fragment_ask_for_permition" >
         <action
-            android:id="@+id/action_askForPermitionFragment_to_askForMethodFragment"
-            app:destination="@id/askForMethodFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/askForMethodFragment"
-        android:name="com.example.wifirtt.ui.AskForMethodFragment"
-        android:label="fragment_ask_for_method"
-        tools:layout="@layout/fragment_ask_for_method" >
-        <action
-            android:id="@+id/action_askForMethodFragment_to_routerFragment"
-            app:destination="@id/routerFragment" />
-        <action
-            android:id="@+id/action_askForMethodFragment_to_routersFileFragment"
+            android:id="@+id/action_askForPermitionFragment_to_routersFileFragment"
             app:destination="@id/routersFileFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/routerFragment"
-        android:name="com.example.wifirtt.ui.RouterFragment"
-        android:label="fragment_router_list"
-        tools:layout="@layout/fragment_router_list" >
-        <action
-            android:id="@+id/action_routerFragment_to_boundingBoxFragment"
-            app:destination="@id/boundingBoxFragment" />
     </fragment>
     <fragment
         android:id="@+id/routersFileFragment"
@@ -44,11 +23,6 @@
             android:id="@+id/action_routersFileFragment_to_boundingBoxFileFragment"
             app:destination="@id/boundingBoxFileFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/boundingBoxFragment"
-        android:name="com.example.wifirtt.ui.BoundingBoxFragment"
-        android:label="fragment_bounding_box"
-        tools:layout="@layout/fragment_bounding_box" />
     <fragment
         android:id="@+id/boundingBoxFileFragment"
         android:name="com.example.wifirtt.ui.BoundingBoxFileFragment"

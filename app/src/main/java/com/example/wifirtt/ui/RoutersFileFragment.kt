@@ -18,7 +18,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.Navigation
 import com.example.wifirtt.R
-import com.example.wifirtt.databinding.FragmentAskForMethodBinding
 import com.example.wifirtt.databinding.FragmentRoutersFileBinding
 import com.example.wifirtt.ui.data.Router
 import com.example.wifirtt.ui.data.ScanRTTRouters
@@ -88,7 +87,8 @@ class RoutersFileFragment : Fragment() {
                             1 -> {val navController = Navigation.findNavController(requireView())
                                 navController.navigate(R.id.action_routersFileFragment_to_boundingBoxFileFragment)}
                             2 -> Toast.makeText(context, "Nie znalezionno routerów "+i.list+" więc nie ma wsystarczającej liczby", Toast.LENGTH_SHORT).show()
-                            3 -> Toast.makeText(context, "Nie znalezionno routerów "+i.list+" ale są 3 routery", Toast.LENGTH_SHORT).show() //zmienić toasty na dialogi
+                            3 -> {val navController = Navigation.findNavController(requireView())
+                                navController.navigate(R.id.action_routersFileFragment_to_boundingBoxFileFragment)}
                         }
                     }
                 }

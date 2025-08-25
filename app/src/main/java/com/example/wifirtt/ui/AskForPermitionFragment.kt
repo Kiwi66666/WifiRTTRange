@@ -32,7 +32,7 @@ class AskForPermitionFragment : Fragment() {
             {
 
                 val navController=Navigation.findNavController(requireView())
-                navController.navigate(R.id.action_askForPermitionFragment_to_askForMethodFragment)
+                navController.navigate(R.id.action_askForPermitionFragment_to_routersFileFragment)
             }
             else {
                 activity?.let {
@@ -56,7 +56,7 @@ class AskForPermitionFragment : Fragment() {
         {
 
             val navController=Navigation.findNavController(requireView())
-            navController.navigate(R.id.action_askForPermitionFragment_to_askForMethodFragment)
+            navController.navigate(R.id.action_askForPermitionFragment_to_routersFileFragment)
         }
         super.onViewCreated(view, savedInstanceState)
     }

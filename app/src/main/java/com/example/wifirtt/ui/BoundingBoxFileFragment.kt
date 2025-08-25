@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.wifirtt.R
-import com.example.wifirtt.databinding.FragmentBoundingBoxBinding
 import com.example.wifirtt.databinding.FragmentBoundingBoxFileBinding
 import com.example.wifirtt.ui.data.BoundingBox
 import com.example.wifirtt.ui.data.BoundingBox4Params

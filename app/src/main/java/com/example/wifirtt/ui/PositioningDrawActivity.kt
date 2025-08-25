@@ -57,18 +57,31 @@ class PositioningDrawActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val filter = IntentFilter(WifiRttManager.ACTION_WIFI_RTT_STATE_CHANGED)
+
+
+
+
         startRangingRequest(0, 0, 0)
-
-
 
 
     }
     @SuppressLint("MissingPermission")
     private fun startRangingRequest(d1: Int, d2: Int, d3: Int) {
+        if (checkScreen) {
+            var sizeOfView = calculateArea(binding.position.height, binding.position.width)
+            if (sizeOfView[0] != 0) {
+                binding.position.updateLayoutParams {
+                    width = sizeOfView[0]
+                    height = sizeOfView[1]
+                }
+                checkScreen = false
+            }
+            addRoutersToDraw(ScanRTTRouters.getListToRanging(), binding.position.height.toFloat(), binding.position.width.toFloat())
+
+        }
         val rangingRequest = RangingRequest.Builder().addAccessPoints(ScanRTTRouters.getListForRTT()).build()
         mgr.startRanging(rangingRequest, mainExecutor, rttRanging)
         numberOfScans++
-        binding.numberOfScans.text=numberOfScans.toString()
         if(d1<200000){
             sumsOfScans[0] += (d1.toFloat()-1800)/1.5F
             numbersOfScansToDraw[0]++
@@ -81,72 +94,26 @@ class PositioningDrawActivity : AppCompatActivity() {
             sumsOfScans[2] += (d3.toFloat()-1000)/1.5F
             numbersOfScansToDraw[2]++
         }
-        if (checkScreen) { //przy pierwszym range trzeba zainicjować
-            var sizeOfView = calculateArea(binding.position.height, binding.position.width)
-            if (sizeOfView[0] != 0) {
-                binding.position.updateLayoutParams {
-                    width = sizeOfView[0]
-                    height = sizeOfView[1]
-                }
-                checkScreen = false
-            }
-            addRoutersToDraw(ScanRTTRouters.getListToRanging(), binding.position.height.toFloat(), binding.position.width.toFloat())
-            val point = Point(0F, 0F,10F, true)
 
-
-            binding.position.setPoint(point)
-        }
         if(numberOfScans==10) {
 
-            addRoutersToDraw(
-                ScanRTTRouters.getListToRanging(),
-                binding.position.height.toFloat(),
-                binding.position.width.toFloat()
+            val xyMeters = trilateration(
+                sumsOfScans[0] / (numbersOfScansToDraw[0] * 1000),
+                sumsOfScans[1] / (numbersOfScansToDraw[1] * 1000),
+                sumsOfScans[2] / (numbersOfScansToDraw[2] * 1000)
             )
-            val xyMeters = trilateration(sumsOfScans[0]/(numbersOfScansToDraw[0]*1000), sumsOfScans[1]/(numbersOfScansToDraw[1]*1000), sumsOfScans[2]/(numbersOfScansToDraw[2]*1000))
             val xyCart = convertMetersToCart(
                 binding.position.width.toFloat(),
                 binding.position.height.toFloat(),
                 xyMeters[0],
                 xyMeters[1]
             )
-            var x = 2.1F
-            var y = 4.30F
+
             val point = Point(xyCart[0], xyCart[1], 10F, false)
-            if(binding.posX.text.toString() != "" || binding.posY.text.toString() != "") {
-                x = binding.posX.text.toString().toFloat()
-                y = binding.posY.text.toString().toFloat()
-            }
 
-            binding.triX.text = xyMeters[0].toString()
-            binding.triY.text = xyMeters[1].toString()
-
-            numberOfScans = 0
-            numbersOfScansToDraw = arrayOf(0,0,0)
-            sumsOfScans = arrayOf(0F,0F,0F)
-
-            val xy = convertNormMetersToCart(binding.position.width.toFloat(), binding.position.height.toFloat(), x, y)
-            val pos = Point(xy[0], xy[1], 10F, false)
-            binding.position.setPos(pos)
             binding.position.setPoint(point)
-            var help = xyMeters[0] - BoundingBox.original.left
-            xyMeters[0] = help
-            help = BoundingBox.original.up - xyMeters[1]
-            xyMeters[1] = help
-            val distanceSquared = ((x-xyMeters[0])*(x-xyMeters[0]))+((y-xyMeters[1])*(y-xyMeters[1]))
-            val distance = sqrt(distanceSquared)
-            binding.distance.text = distance.toString()
-            val filepath = "test"
-            val filename = "test.txt"
-            val externalFile = File(getExternalFilesDir(filepath), filename)
-            try {
-                val fos = FileOutputStream(externalFile, true)
-                fos.write(distance.toString().toByteArray())
-                fos.write(",".toByteArray())
-                Toast.makeText(this@PositioningDrawActivity, "działa", Toast.LENGTH_SHORT).show()
-            } catch (e: IOException) {
-                Toast.makeText(this@PositioningDrawActivity, "nie działa", Toast.LENGTH_SHORT).show()
-            }
+
+
         }
     }
     private inner class RTTRangingResultCallback : RangingResultCallback() {
@@ -174,15 +141,14 @@ class PositioningDrawActivity : AppCompatActivity() {
 
         override fun onRangingFailure(p0: Int) {
             Log.d("s", "nie działa")
-            startRangingRequest(0, 0, 0)
-            Toast.makeText(this@PositioningDrawActivity, "jest coś", Toast.LENGTH_SHORT).show()
+            queueRequest(0, 0, 0)
         }
     }
 
     private fun addRoutersToDraw(r: MutableList<RouterToRanging>, x: Float, y:Float) {
         val routers: MutableList<Point> = ArrayList()
         r.forEach {
-            val xy = convertNormMetersToCart(x, y, it.xNorm, it.yNorm)
+            val xy = convertMetersToCart(x, y, it.x, it.y)
             val router = Point(xy[0], xy[1], 10F, true)
             routers.add(router)
         }
@@ -209,14 +175,6 @@ class PositioningDrawActivity : AppCompatActivity() {
         val yNorm = help
         val rx = xNorm/BoundingBox.x
         val ry = yNorm/BoundingBox.y
-        if (rx > 1.0F || ry > 1.0F) {
-            return arrayOf(0F,0F)
-        }
-        return arrayOf(rx*xCart, ry*yCart)
-    }
-    private fun convertNormMetersToCart(xCart: Float, yCart: Float, x: Float, y: Float):Array<Float> {
-        val rx = x/BoundingBox.x
-        val ry = y/BoundingBox.y
         if (rx > 1.0F || ry > 1.0F) {
             return arrayOf(0F,0F)
         }
