@@ -83,7 +83,7 @@ class PositioningDrawActivity : AppCompatActivity() {
         mgr.startRanging(rangingRequest, mainExecutor, rttRanging)
         numberOfScans++
         if(d1<200000){
-            sumsOfScans[0] += (d1.toFloat()-1800)/1.5F
+            sumsOfScans[0] += (d1.toFloat()+3000)/1.5F
             numbersOfScansToDraw[0]++
         }
         if(d2<200000){
